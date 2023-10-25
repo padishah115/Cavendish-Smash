@@ -1,14 +1,19 @@
 import tkinter as tk
 import numpy as np
-from class_list import *
+from constants import *
+from platform_class import *
+from ball import *
+from block import *
 
 
 root = tk.Tk()
-canvas = tk.Canvas(root, width = canvas_width, height = canvas_height)
-canvas.pack()
+MyCanvas = tk.Canvas(root, width = canvas_width, height = canvas_height)
+MyCanvas.pack()
 
-platform = Platform(50, canvas)
-pongball = Ball(canvas)
+platform = Platform(50, MyCanvas)
+pongball = Ball(MyCanvas)
+
+create_grid(2, 2, 10, 10, MyCanvas)
 
 def animate():
     pongball.move()

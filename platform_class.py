@@ -1,6 +1,8 @@
 import tkinter as tk
 import numpy as np
 from constants import *
+from ball import *
+from block import Block
 
 class Platform:
     """Platform Class: This encodes the properties of the moveable rectangle in Python"""
@@ -33,34 +35,18 @@ class Platform:
         self.x2 += self.movement_speed
 
 
-def collide(ball1):
-    """Encodes what happens during a collision between the platform and the ball"""
-    ball1.velocity[1] *= -1
+def create_grid(rows, columns, width, height, canvas):
+    com = np.array([canvas_height/4, canvas_width/2])
 
-def check(platform1, ball1):
-    """Checks ball position and changes velocity depending on whether the ball has collided with the
-    walls or platform"""
-    dx = platform1.position[0] - ball1.position[0]
-    dy = platform1.position[1] - ball1.position[1]
-    r = np.sqrt(dx**2 + dy**2)
+    for i in range(0, rows):
+        x = -rows / 2
+        for j in range (0, columns):
+            y = -columns / 2
+            new_block = Block(com + np.array([y*width/2, x*width/2]), width, height, "red", canvas)
+            new_block.draw()
+            y += 1
+        x += 1
 
-    if ball1.position[0] >= platform1.x1 - ball1.radius and ball1.position[1] == platform1.y1 \
-        and ball1.position[0] <= platform1.x2 + ball1.radius:
-        
-        collide(ball1)
 
-    if ball1.position[0] >= canvas_width - ball1.radius:
-        #If ball all the way to the right hand side
-        ball1.velocity[0] *= -1 
 
-    if ball1.position[0] <= ball1.radius:
-        #If ball all the way to the left
-        ball1.velocity[0] *= -1
 
-    if ball1.position[1] <= ball1.radius:
-        #If ball is all the way at the top
-        ball1.velocity[1] *= -1
-
-    if canvas_height - ball1.position[1] <= r:
-        #THIS SHOULD LOSE YOU THE GAME!
-        print("Game Over!")
