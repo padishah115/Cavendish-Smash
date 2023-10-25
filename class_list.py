@@ -21,18 +21,23 @@ class Platform:
         self.position = np.array([x_com, y_com])
 
     def move_left(self, event):
+        """Moves the platform left when the player uses the left arrow key"""
         self.canvas.move(self.rectangle, -1*self.movement_speed, 0)
         self.position[0] -= self.movement_speed
         self.x1 -= self.movement_speed
         self.x2 -= self.movement_speed
 
     def move_right(self, event):
+        """Moves the platform right when the player presses the right arrow key"""
         self.canvas.move(self.rectangle, self.movement_speed, 0)
         self.position[0] += self.movement_speed
         self.x1 += self.movement_speed
         self.x2 += self.movement_speed
 
+
+
 class Ball:
+    """bouncing ball class, obviously"""
     def __init__(self, canvas, color = "red", radius = 10, position = np.array([400, 400])):
         self.canvas = canvas
         self.color = color
@@ -59,6 +64,14 @@ class Ball:
     def move(self):
         self.position = self.velocity + self.position
         self.canvas.move(self.oval, self.velocity[0], self.velocity[1])
+
+
+class Block:
+    def __init__(self, position, color, canvas):
+        self.position = position
+        self.color = color
+        self.canvas = canvas
+
 
 def collide(platform1, ball1):
     """Encodes what happens during a collision between the platform and the ball"""
