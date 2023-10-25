@@ -5,7 +5,6 @@ from platform_class import *
 from ball import *
 from block import *
 
-
 root = tk.Tk()
 MyCanvas = tk.Canvas(root, width = canvas_width, height = canvas_height)
 MyCanvas.pack()

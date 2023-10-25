@@ -5,6 +5,7 @@ from constants import *
 from platform_class import *
 from block import *
 
+
 class Ball:
     """bouncing ball class, obviously"""
     def __init__(self, canvas, color = "red", radius = 10, position = np.array([400, 400])):
@@ -35,7 +36,7 @@ class Ball:
         self.canvas.move(self.oval, self.velocity[0], self.velocity[1])
 
 
-def collide(platform1, ball1):
+def collide(ball1):
     """Encodes what happens during a collision between the platform and the ball"""
     ball1.velocity[1] *= -1
 
@@ -49,8 +50,7 @@ def check(platform1, ball1):
 
     if ball1.position[0] >= platform1.x1 - ball1.radius and ball1.position[1] == platform1.y1 \
         and ball1.position[0] <= platform1.x2 + ball1.radius:
-        
-        collide(platform1, ball1)
+        collide(ball1)
 
     if ball1.position[0] >= canvas_width - ball1.radius:
         #If ball all the way to the right hand side
@@ -67,3 +67,5 @@ def check(platform1, ball1):
     if canvas_height - ball1.position[1] <= r:
         #THIS SHOULD LOSE YOU THE GAME!
         print("Game Over!")
+
+    

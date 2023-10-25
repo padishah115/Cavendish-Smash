@@ -25,15 +25,16 @@ class Block:
         self.rectangle = self.canvas.create_rectangle(x1, y1, x2, y2, fill = self.color)
 
 
-
 def create_grid(rows, columns, width, height, canvas):
-    com = np.array([canvas_height/4, canvas_width/2])
+    center_of_mass = np.array([canvas_width/2, canvas_height/4])
+    x_i = center_of_mass[0] - (columns * width) / 2
+    y_i = center_of_mass[1] - (rows * height) /2
 
     for i in range(0, rows):
-        x = -rows / 2
         for j in range (0, columns):
-            y = -columns / 2
-            new_block = Block(com + np.array([y*width/2, x*width/2]), width, height, "red", canvas)
+            x_new = x_i + j*width
+            y_new = y_i + i*height
+
+            new_position = np.array([x_new, y_new])
+            new_block = Block(new_position, width, height, "red", canvas)
             new_block.draw()
-            y += 1
-        x += 1
