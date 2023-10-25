@@ -35,18 +35,6 @@ class Platform:
         self.x2 += self.movement_speed
 
 
-def create_grid(rows, columns, width, height, canvas):
-    com = np.array([canvas_height/4, canvas_width/2])
-
-    for i in range(0, rows):
-        x = -rows / 2
-        for j in range (0, columns):
-            y = -columns / 2
-            new_block = Block(com + np.array([y*width/2, x*width/2]), width, height, "red", canvas)
-            new_block.draw()
-            y += 1
-        x += 1
-
 
 
 
