@@ -72,6 +72,7 @@ class Ball:
             print("Game Over!")
 
         for block in bodies:
+            """Loop checking the poisition of the ball against all blocks in the bodies class"""
             block_x = block.position[0]
             block_y = block.position[1]
             block_width = block.width
