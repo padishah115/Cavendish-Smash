@@ -21,8 +21,8 @@ class Ball:
         self.draw() #Draws ball onto canvas
 
     def set_velocity(self):
-        v_x = np.random.uniform(-5,5)
-        v_y = 2
+        v_x = np.random.uniform(-2,2)
+        v_y = 5
 
         self.velocity = [v_x, v_y]
 
@@ -36,9 +36,9 @@ class Ball:
         self.canvas.move(self.oval, self.velocity[0], self.velocity[1])
 
 
-def collide(ball1):
-    """Encodes what happens during a collision between the platform and the ball"""
-    ball1.velocity[1] *= -1
+    def collide(self):
+        """Encodes what happens during a collision between the platform and the ball"""
+        self.velocity[1] *= -1
 
 
 def check(platform1, ball1):
@@ -50,7 +50,7 @@ def check(platform1, ball1):
 
     if ball1.position[0] >= platform1.x1 - ball1.radius and ball1.position[1] == platform1.y1 \
         and ball1.position[0] <= platform1.x2 + ball1.radius:
-        collide(ball1)
+        ball1.collide()
 
     if ball1.position[0] >= canvas_width - ball1.radius:
         #If ball all the way to the right hand side
@@ -67,5 +67,38 @@ def check(platform1, ball1):
     if canvas_height - ball1.position[1] <= r:
         #THIS SHOULD LOSE YOU THE GAME!
         print("Game Over!")
+
+    for block in bodies:
+        block_x = block.position[0]
+        block_y = block.position[1]
+        block_width = block.width
+        block_height = block.height
+
+        block_left = block_x - block_width/2
+        block_right = block_x + block_width/2
+        block_top = block_y + block_height/2
+        block_bottom = block_y - block_height/2
+
+       
+        #Collides with left hand side
+        if ball1.position[0] + ball1.radius == block_left and ball1.position[1] + ball1.radius >= block_bottom\
+              and ball1.position[1] - ball1.radius <= block_top:
+            ball1.velocity[0] *= -1
+                
+        #Collides with right hand side
+        if ball1.position[0] - ball1.radius == block_right and ball1.position[1] + ball1.radius >= block_bottom\
+              and ball1.position[1] - ball1.radius <= block_top:
+            ball1.velocity[0] *= -1
+
+        #Collides with top side
+        if ball1.position[0] - ball1.radius <= block_right and ball1.position[0] + ball1.radius >= block_left\
+              and ball1.position[1] - ball1.radius == block_top:
+            ball1.velocity[1] *= -1
+
+        #Collides with bottom side
+        if ball1.position[0] - ball1.radius <= block_right and ball1.position[0] + ball1.radius >= block_left\
+              and ball1.position[1] + ball1.radius == block_bottom:
+            ball1.velocity[1] *= -1
+        
 
     

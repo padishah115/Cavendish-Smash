@@ -22,7 +22,13 @@ class Block:
         y1 = self.position[1] + self.height / 2
         y2 = self.position[1] - self.height / 2
 
+        bodies.append(self)
+
         self.rectangle = self.canvas.create_rectangle(x1, y1, x2, y2, fill = self.color)
+
+    def delete(self):
+        self.canvas.delete(self.rectangle)
+        bodies.remove(self)
 
 
 def create_grid(rows, columns, width, height, canvas):
