@@ -22,9 +22,9 @@ class Ball:
 
     def set_velocity(self):
         v_x = np.random.uniform(-2,2)
-        v_y = 5
+        v_y = -5
 
-        self.velocity = [v_x, v_y]
+        self.velocity = np.array([v_x, v_y])
 
     def draw(self):
         x1, y1 = self.position[0] - self.radius, self.position[1] - self.radius
@@ -35,70 +35,81 @@ class Ball:
         self.position = self.velocity + self.position
         self.canvas.move(self.oval, self.velocity[0], self.velocity[1])
 
-
-    def collide(self):
-        """Encodes what happens during a collision between the platform and the ball"""
+    def reverse_y(self):
+        """Reverses Y velocity"""
         self.velocity[1] *= -1
 
+    def reverse_x(self):
+        """Reverses X Velocity"""
+        self.velocity[0] *= -1
 
-def check(platform1, ball1):
-    """Checks ball position and changes velocity depending on whether the ball has collided with the
-    walls or platform"""
-    dx = platform1.position[0] - ball1.position[0]
-    dy = platform1.position[1] - ball1.position[1]
-    r = np.sqrt(dx**2 + dy**2)
 
-    if ball1.position[0] >= platform1.x1 - ball1.radius and ball1.position[1] == platform1.y1 \
-        and ball1.position[0] <= platform1.x2 + ball1.radius:
-        ball1.collide()
+    def check(self, platform1):
+        """Checks ball position and changes velocity depending on whether the ball has collided with the
+        walls or platform or blocks"""
+        dx = platform1.position[0] - self.position[0]
+        dy = platform1.position[1] - self.position[1]
+        r = np.sqrt(dx**2 + dy**2)
 
-    if ball1.position[0] >= canvas_width - ball1.radius:
-        #If ball all the way to the right hand side
-        ball1.velocity[0] *= -1 
+        if self.position[0] >= platform1.x1 - self.radius and self.position[1] == platform1.y1 \
+            and self.position[0] <= platform1.x2 + self.radius:
+            self.reverse_y()
 
-    if ball1.position[0] <= ball1.radius:
-        #If ball all the way to the left
-        ball1.velocity[0] *= -1
+        if self.position[0] >= canvas_width - self.radius:
+            #If ball all the way to the right hand side
+            self.reverse_x()
 
-    if ball1.position[1] <= ball1.radius:
-        #If ball is all the way at the top
-        ball1.velocity[1] *= -1
+        if self.position[0] <= self.radius:
+            #If ball all the way to the left
+            self.reverse_x()
 
-    if canvas_height - ball1.position[1] <= r:
-        #THIS SHOULD LOSE YOU THE GAME!
-        print("Game Over!")
+        if self.position[1] <= self.radius:
+            #If ball is all the way at the top
+            self.reverse_y()
 
-    for block in bodies:
-        block_x = block.position[0]
-        block_y = block.position[1]
-        block_width = block.width
-        block_height = block.height
+        if canvas_height - self.position[1] <= r:
+            #THIS SHOULD LOSE YOU THE GAME!
+            print("Game Over!")
 
-        block_left = block_x - block_width/2
-        block_right = block_x + block_width/2
-        block_top = block_y + block_height/2
-        block_bottom = block_y - block_height/2
+        for block in bodies:
+            block_x = block.position[0]
+            block_y = block.position[1]
+            block_width = block.width
+            block_height = block.height
 
-       
-        #Collides with left hand side
-        if ball1.position[0] + ball1.radius == block_left and ball1.position[1] + ball1.radius >= block_bottom\
-              and ball1.position[1] - ball1.radius <= block_top:
-            ball1.velocity[0] *= -1
-                
-        #Collides with right hand side
-        if ball1.position[0] - ball1.radius == block_right and ball1.position[1] + ball1.radius >= block_bottom\
-              and ball1.position[1] - ball1.radius <= block_top:
-            ball1.velocity[0] *= -1
+            block_left = block_x - block_width/2
+            block_right = block_x + block_width/2
+            block_top = block_y + block_height/2
+            block_bottom = block_y - block_height/2
 
-        #Collides with top side
-        if ball1.position[0] - ball1.radius <= block_right and ball1.position[0] + ball1.radius >= block_left\
-              and ball1.position[1] - ball1.radius == block_top:
-            ball1.velocity[1] *= -1
+        
+            #Collides with left hand side
+            if self.position[0] + self.radius == block_left and self.position[1] + self.radius >= block_bottom\
+                and self.position[1] - self.radius <= block_top:
+                self.reverse_x()
+                block.delete()
+                break
+                    
+            #Collides with right hand side
+            if self.position[0] - self.radius == block_right and self.position[1] + self.radius >= block_bottom\
+                and self.position[1] - self.radius <= block_top:
+                self.reverse_x()
+                block.delete()
+                break
 
-        #Collides with bottom side
-        if ball1.position[0] - ball1.radius <= block_right and ball1.position[0] + ball1.radius >= block_left\
-              and ball1.position[1] + ball1.radius == block_bottom:
-            ball1.velocity[1] *= -1
+            #Collides with top side
+            if self.position[0] - self.radius <= block_right and self.position[0] + self.radius >= block_left\
+                and self.position[1] - self.radius == block_top:
+                self.reverse_y()
+                block.delete()
+                break
+
+            #Collides with bottom side
+            if self.position[0] - self.radius <= block_right and self.position[0] + self.radius >= block_left\
+                and self.position[1] + self.radius == block_bottom:
+                self.reverse_y()
+                block.delete()
+                break
         
 
     

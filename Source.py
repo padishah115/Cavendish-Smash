@@ -16,7 +16,7 @@ create_grid(10, 10, 20, 10, MyCanvas)
 
 def animate():
     pongball.move()
-    check(platform,pongball)
+    pongball.check(platform)
     root.after(20, animate)
 
 animate()
