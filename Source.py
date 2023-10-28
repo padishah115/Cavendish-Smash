@@ -4,13 +4,14 @@ from constants import *
 from platform_class import *
 from ball import *
 from block import *
+from level import *
 
 root = tk.Tk()
 MyCanvas = tk.Canvas(root, width = canvas_width, height = canvas_height)
 MyCanvas.pack()
 
 platform = Platform(100, MyCanvas)
-pongball = Ball(MyCanvas)
+pongball = Ball(MyCanvas, 3, 3)
 
 create_grid(10, 10, 20, 10, MyCanvas)
 

@@ -8,23 +8,14 @@ from block import *
 
 class Ball:
     """bouncing ball class, obviously"""
-    def __init__(self, canvas, color = "red", radius = 10, position = np.array([400, 400])):
+    def __init__(self, canvas, v_x, v_y, color = "red", radius = 10, position = np.array([400, 400])):
         self.canvas = canvas
         self.color = color
         self.radius = radius
         self.position = position
-
         self.oval = 0
-        self.velocity = 0
-
-        self.set_velocity() #Initialises velocity
-        self.draw() #Draws ball onto canvas
-
-    def set_velocity(self):
-        v_x = np.random.uniform(-2,2)
-        v_y = -5
-
         self.velocity = np.array([v_x, v_y])
+        self.draw() #Draws ball onto canvas
 
     def draw(self):
         x1, y1 = self.position[0] - self.radius, self.position[1] - self.radius
